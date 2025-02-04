@@ -1,4 +1,5 @@
 # Flutter Starter Kit
 
 ## Documentation
-- [Decision Records](docs/decisions/decisions.md)
+
+- [Wiki](https://github.com/8thlight/flutter-starter-kit/wiki)
