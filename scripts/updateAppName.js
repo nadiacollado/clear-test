@@ -8,8 +8,8 @@ const updateAppName = (appName) => {
   // Update pubspec.yaml
   updateFile(
     "pubspec.yaml",
-    /name:\s*".*"/,
-    'name: "$appNameSnakeCase"',
+    /name:\s*\S+/,
+    `name: ${appNameSnakeCase}`,  // No quotes needed in the replacement
     "pubspec.yaml"
   );
 

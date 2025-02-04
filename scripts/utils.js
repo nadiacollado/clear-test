@@ -24,7 +24,10 @@ const updateFile = (filePath, regex, replacement, fileDesc) => {
 };
 
 function toSnakeCase(appName) {
-  return appName.replace(/([A-Z])/g, (match) => `_${match.toLowerCase()}`).toLowerCase();
+  return appName
+    .toLowerCase()
+    .split(/\s+/)
+    .join('_');
 }
 
 module.exports = { installCurrentPackages, installPackages, updateFile, toSnakeCase };
