@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/counter/domain/counter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../domain/counter.dart';
 
 part 'counter_repository.g.dart';
 
