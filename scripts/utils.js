@@ -5,10 +5,12 @@ const installCurrentPackages = () => {
    execSync('flutter pub get');
 };
 
-const installPackages = (packageList) => {
-  if (packageList.length > 0) {
-    console.log(`Installing: ${packageList.join(", ")}`);
-    execSync(`flutter pub add ${packageList.join(" ")}`, { stdio: "inherit" });
+const installPackages = (packageList, isDev = false) => {
+ if (packageList.length > 0) {
+    const flag = isDev ? "--dev" : "";
+    console.log(`Installing ${isDev ? "dev " : ""}dependencies: ${packageList.join(", ")}`);
+    
+    execSync(`flutter pub add ${flag} ${packageList.join(" ")}`, { stdio: "inherit" });
   }
 };
 
