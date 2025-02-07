@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_app/common_widgets/common_scaffold.dart';
+import './common_widgets/common_scaffold.dart';
 import 'features/counter/presentation/counter_screen.dart';
 
 void main() {
