@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: CommonScaffold(
-        title: 'Flutter Counter App',
+        title: 'Flutter Template App',
         body: CounterScreen(),
         backgroundColor: Colors.white,
       ),
