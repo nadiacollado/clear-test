@@ -31,8 +31,8 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
       spacing: 16.0,
       children: [
         CommonTextformField(
-          labelText: 'Please enter your username',
-          inputHint: 'Please enter your username',
+          labelText: 'Email',
+          inputHint: 'Please enter your email',
           onChange: widget.onEmailChanged,
         ),
         CommonTextformField(

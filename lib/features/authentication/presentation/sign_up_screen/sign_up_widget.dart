@@ -29,7 +29,7 @@ class _SignUpWidgetState extends ConsumerState<SignUpWidget> {
       children: [
         CommonTextformField(
           labelText: 'Email',
-          inputHint: 'Please enter your username',
+          inputHint: 'Please enter your email',
           onChange: widget.onEmailChanged,
         ),
         const SizedBox(height: 16),
