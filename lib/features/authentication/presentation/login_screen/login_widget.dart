@@ -13,7 +13,7 @@ class LoginWidget extends ConsumerStatefulWidget {
     required this.onCreateAccount,
   });
 
-  final void Function(String) onLogin;
+  final void Function() onLogin;
   final ValueChanged<String> onEmailChanged;
   final ValueChanged<String> onPasswordChanged;
   final VoidCallback onCreateAccount;
@@ -45,7 +45,7 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
         ),
         CommonButton(
           text: 'Login',
-          onPressed: () => widget.onLogin,
+          onPressed: widget.onLogin,
           isFullWidth: true,
         ),
         CommonButton(

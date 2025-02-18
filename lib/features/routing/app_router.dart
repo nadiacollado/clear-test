@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../common_widgets/common_scaffold.dart';
 import '../../features/authentication/presentation/login_screen/login_screen.dart';
 import '../../features/authentication/presentation/sign_up_screen/sign_up_screen.dart';
+import '../counter/presentation/counter_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -32,6 +34,14 @@ GoRouter goRouter(Ref ref) {
         pageBuilder: (BuildContext context, GoRouterState state) =>
             const NoTransitionPage<dynamic>(
           child: CommonScaffold(body: SignUpScreen()),
+        ),
+      ),
+      GoRoute(
+        path: '/counter',
+        name: AppRoute.counter.name,
+        pageBuilder: (BuildContext context, GoRouterState state) =>
+            const NoTransitionPage<dynamic>(
+          child: CommonScaffold(body: CounterScreen()),
         ),
       ),
     ],

@@ -15,7 +15,7 @@ class SignUpWidget extends ConsumerStatefulWidget {
 
   final ValueChanged<String> onEmailChanged;
   final ValueChanged<String> onPasswordChanged;
-  final VoidCallback onCreateAccount;
+  final void Function() onCreateAccount;
   final VoidCallback onLogin;
 
   @override
@@ -52,7 +52,7 @@ class _SignUpWidgetState extends ConsumerState<SignUpWidget> {
         ),
         CommonButton(
           text: 'Create Account',
-          onPressed: () => widget.onCreateAccount,
+          onPressed: widget.onCreateAccount,
           isFullWidth: true,
         ),
         CommonButton(
