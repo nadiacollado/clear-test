@@ -1,0 +1,6 @@
+[submodule ".actions/flutter-action"]
+	path = .actions/flutter-action
+	url = https://github.com/subosito/flutter-action.git
+[submodule ".actions/github-actions-analyze-dart"]
+	path = .actions/github-actions-analyze-dart
+	url = https://github.com/zgosalvez/github-actions-analyze-dart.git
