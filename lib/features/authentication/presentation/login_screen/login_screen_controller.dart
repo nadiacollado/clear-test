@@ -2,8 +2,6 @@ import 'package:flutter_starter_kit/features/authentication/data/firebase_auth_r
 import 'package:flutter_starter_kit/utils/auth_status.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../utils/firebase_auth_exception_handler.dart';
-
 part 'login_screen_controller.g.dart';
 
 @riverpod
