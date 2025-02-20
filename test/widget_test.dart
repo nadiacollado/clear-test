@@ -30,4 +30,25 @@ void main() {
       expect(find.text(tester.t.count_counter(1)), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'Counter decrements correctly',
+    (WidgetTester tester) async {
+      await tester.localizedPump(const CounterScreen());
+
+      expect(find.text(tester.t.count_counter(0)), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+
+      expect(find.text(tester.t.count_counter(2)), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.remove));
+      await tester.pump();
+
+      expect(find.text(tester.t.count_counter(1)), findsOneWidget);
+    },
+  );
 }
