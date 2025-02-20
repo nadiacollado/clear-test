@@ -47,10 +47,17 @@ jobs:
         run: cp env_template .env
       - name: Build generated code
         run: dart run build_runner build --delete-conflicting-outputs
+      - name: Create coverage helper file
+        run: |
+          file=test/coverage_helper_test.dart
+          echo "// Helper file to make coverage work for all dart files\n" > $file
+          echo "// ignore_for_file: unused_import" >> $file
+          find lib -not -name '*.g.dart' -and -name '*.dart' | cut -c4- | awk -v package=$(cat pubspec.yaml | grep 'name:' | cut -d ':' -f2- | tr -d ' ') '{printf "import '\''package:%s%s'\'';\n", package, $1}' >> $file
+          echo "void main(){}" >> $file
       - run: flutter test --coverage
       - name: Filter Coverage Report
         run: |
-          lcov --remove coverage/lcov.info 'lib/**/*.g.dart' -o coverage/filtered_lcov.info
+          lcov --remove coverage/lcov.info 'lib/**/*.g.dart' 'lib/env/env.dart' -o coverage/filtered_lcov.info
       - name: Generate Coverage Report
         run: |
           mkdir -p coverage
