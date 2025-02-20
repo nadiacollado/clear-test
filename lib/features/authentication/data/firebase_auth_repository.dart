@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../utils/auth_status.dart';
-import '../../../utils/firebase_auth_exception_handler.dart';
+import '../domain/auth_status.dart';
+import '../domain/firebase_auth_exception_handler.dart';
 
 part 'firebase_auth_repository.g.dart';
 
