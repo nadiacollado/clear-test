@@ -12,6 +12,7 @@ class LoginWidget extends ConsumerStatefulWidget {
     required this.onEmailChanged,
     required this.onPasswordChanged,
     required this.onCreateAccount,
+    required this.onForgotPassword,
     this.isLoginDisabled = false,
   });
 
@@ -20,6 +21,7 @@ class LoginWidget extends ConsumerStatefulWidget {
   final ValueChanged<String> onPasswordChanged;
   final bool isLoginDisabled;
   final VoidCallback onCreateAccount;
+  final VoidCallback onForgotPassword;
 
   @override
   ConsumerState<LoginWidget> createState() => _LoginWidgetState();
@@ -28,38 +30,53 @@ class LoginWidget extends ConsumerStatefulWidget {
 class _LoginWidgetState extends ConsumerState<LoginWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16.0,
-      children: <Widget>[
-        CommonTextformField(
-          labelText: context.t.auth_email,
-          inputHint: context.t.auth_enterEmail,
-          icon: Icons.email,
-          onChange: widget.onEmailChanged,
-        ),
-        CommonTextformField(
-          labelText: context.t.auth_password,
-          inputHint: context.t.auth_enterPassword,
-          icon: Icons.lock,
-          obscureText: true,
-          onChange: widget.onPasswordChanged,
-        ),
-        CommonButton(
-          text: context.t.auth_login,
-          isDisabled: widget.isLoginDisabled,
-          onPressed: widget.onLogin,
-          isFullWidth: true,
-        ),
-        CommonButton(
-          text: context.t.auth_createAnAccount,
-          onPressed: widget.onCreateAccount,
-          type: ButtonType.transparent,
-          isFullWidth: true,
-        ),
-      ],
+    return SizedBox.expand(
+      child: Column(
+        children: <Widget>[
+          const Spacer(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            spacing: 16,
+            children: <Widget>[
+              CommonTextformField(
+                labelText: context.t.auth_email,
+                inputHint: context.t.auth_enterEmail,
+                icon: Icons.email,
+                onChange: widget.onEmailChanged,
+              ),
+              CommonTextformField(
+                labelText: context.t.auth_password,
+                inputHint: context.t.auth_enterPassword,
+                icon: Icons.lock,
+                obscureText: true,
+                onChange: widget.onPasswordChanged,
+              ),
+              CommonButton(
+                text: context.t.auth_login,
+                isDisabled: widget.isLoginDisabled,
+                onPressed: widget.onLogin,
+                isFullWidth: true,
+              ),
+              CommonButton(
+                text: 'Forgot Password?',
+                type: ButtonType.transparent,
+                onPressed: widget.onForgotPassword,
+              ),
+            ],
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: CommonButton(
+              text: context.t.auth_createAnAccount,
+              onPressed: widget.onCreateAccount,
+              type: ButtonType.transparent,
+              isFullWidth: true,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -54,30 +54,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final LoginFormState state = ref.watch(loginScreenControllerProvider);
-
     final LoginScreenController controller =
         ref.read(loginScreenControllerProvider.notifier);
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 400,
-          maxHeight: 600,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: LoginWidget(
-            isLoginDisabled: state.isLoginDisabled,
-            onLogin: () {
-              if (!state.isLoading) {
-                _onLogin();
-              }
-            },
-            onEmailChanged: (String value) =>
-                setState(() => controller.updateEmail(value)),
-            onPasswordChanged: (String value) =>
-                setState(() => controller.updatePassword(value)),
-            onCreateAccount: () => context.goNamed(AppRoute.signUp.name),
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox.expand(
+          // Ensures `LoginWidget` takes full screen height
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: LoginWidget(
+              isLoginDisabled: state.isLoginDisabled,
+              onLogin: () {
+                if (!state.isLoading) {
+                  _onLogin();
+                }
+              },
+              onEmailChanged: (String value) =>
+                  setState(() => controller.updateEmail(value)),
+              onPasswordChanged: (String value) =>
+                  setState(() => controller.updatePassword(value)),
+              onCreateAccount: () => context.goNamed(AppRoute.signUp.name),
+              onForgotPassword: () =>
+                  context.pushNamed(AppRoute.forgotPassword.name),
+            ),
           ),
         ),
       ),
