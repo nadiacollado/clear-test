@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common_widgets/common_button.dart';
 import '../../../../common_widgets/common_text_form_field.dart';
+import '../../../../l10n/translate.dart';
 
 class LoginWidget extends ConsumerStatefulWidget {
   const LoginWidget({
@@ -34,26 +35,26 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
       spacing: 16.0,
       children: <Widget>[
         CommonTextformField(
-          labelText: 'Email',
-          inputHint: 'Please enter your email',
+          labelText: context.t.auth_email,
+          inputHint: context.t.auth_enterEmail,
           icon: Icons.email,
           onChange: widget.onEmailChanged,
         ),
         CommonTextformField(
-          labelText: 'Password',
-          inputHint: 'Please enter your password',
+          labelText: context.t.auth_password,
+          inputHint: context.t.auth_enterPassword,
           icon: Icons.lock,
           obscureText: true,
           onChange: widget.onPasswordChanged,
         ),
         CommonButton(
-          text: 'Login',
+          text: context.t.auth_login,
           isDisabled: widget.isLoginDisabled,
           onPressed: widget.onLogin,
           isFullWidth: true,
         ),
         CommonButton(
-          text: 'Create an Account',
+          text: context.t.auth_createAnAccount,
           onPressed: widget.onCreateAccount,
           type: ButtonType.transparent,
           isFullWidth: true,
