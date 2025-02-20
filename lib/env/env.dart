@@ -28,4 +28,7 @@ final class Env {
 
   @EnviedField(varName: 'IOS_BUNDLE_ID', obfuscate: true)
   static final String iosBundleId = _Env.iosBundleId;
+
+  @EnviedField(varName: 'GCP_LOGGING_SERVICE_ACCOUNT', obfuscate: true)
+  static final String gcpLoggingServiceAccount = _Env.gcpLoggingServiceAccount;
 }
