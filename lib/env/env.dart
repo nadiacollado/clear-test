@@ -31,4 +31,7 @@ final class Env {
 
   @EnviedField(varName: 'GCP_LOGGING_SERVICE_ACCOUNT', obfuscate: true)
   static final String gcpLoggingServiceAccount = _Env.gcpLoggingServiceAccount;
+
+  @EnviedField(varName: 'GCP_PROJECT_ID', obfuscate: true)
+  static final String gcpProjectId = _Env.gcpProjectId;
 }
