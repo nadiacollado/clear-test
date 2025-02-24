@@ -18,12 +18,21 @@ Future<void> showCommonDialog({
         actions: <Widget>[
           if (secondaryButtonText != null)
             TextButton(
-              onPressed:
-                  onSecondaryPressed ?? () => Navigator.of(context).pop(),
+              onPressed: () {
+                if (onSecondaryPressed != null) {
+                  onSecondaryPressed();
+                }
+                Navigator.of(context).pop();
+              },
               child: Text(secondaryButtonText),
             ),
           TextButton(
-            onPressed: onPrimaryPressed ?? () => Navigator.of(context).pop(),
+            onPressed: () {
+              if (onPrimaryPressed != null) {
+                onPrimaryPressed();
+              }
+              Navigator.of(context).pop();
+            },
             child: Text(primaryButtonText),
           ),
         ],
