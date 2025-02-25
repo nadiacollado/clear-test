@@ -1,13 +1,22 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
+import 'core/logger/google_cloud_logging_service.dart';
 import 'features/routing/app_router.dart';
 import 'firebase_options.dart';
 import 'l10n/translate.dart';
+
+final GoogleCloudLoggingService googleCloudLoggingService =
+    GoogleCloudLoggingService();
 
 Future<void> initFirebase() async {
   await Firebase.initializeApp(
@@ -19,6 +28,24 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initFirebase();
+  await googleCloudLoggingService.setupLoggingApi();
+
+  Logger.addOutputListener((OutputEvent event) {
+    googleCloudLoggingService.writeLog(
+      level: event.level,
+      message: event.lines.join('\n'),
+    );
+    debugPrint('Flutter Starter Kit will log output to Cloud Logging');
+  });
+
+  FlutterError.onError = (FlutterErrorDetails errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   runApp(
     const ProviderScope(
