@@ -55,16 +55,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final LoginFormState state = ref.watch(loginScreenControllerProvider);
-
     final LoginScreenController controller =
         ref.read(loginScreenControllerProvider.notifier);
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 400,
-          maxHeight: 600,
-        ),
+    return SafeArea(
+      child: SizedBox.expand(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: LoginWidget(
@@ -79,6 +74,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             onPasswordChanged: (String value) =>
                 setState(() => controller.updatePassword(value)),
             onCreateAccount: () => context.goNamed(AppRoute.signUp.name),
+            onForgotPassword: () =>
+                context.pushNamed(AppRoute.forgotPassword.name),
           ),
         ),
       ),

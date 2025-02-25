@@ -58,7 +58,7 @@ extension LocalizedPump on WidgetTester {
                     locale: const Locale('en'),
                   )
                 : MaterialApp(
-                    home: widget,
+                    home: Scaffold(body: widget),
                     localizationsDelegates: delegates,
                     supportedLocales: AppLocalizations.supportedLocales,
                     locale: const Locale('en'),
