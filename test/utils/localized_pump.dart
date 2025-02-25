@@ -30,7 +30,7 @@ extension LocalizedPump on WidgetTester {
         ],
         supportedLocales: AppLocalizations.supportedLocales,
         locale: const Locale('en'),
-        home: ProviderScope(child: widget),
+        home: Scaffold(body: ProviderScope(child: widget)),
       ),
     );
   }

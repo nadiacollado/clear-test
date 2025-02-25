@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter_kit/common_widgets/common_text_form_field.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../utils/localized_widget.dart';
+import '../utils/localized_pump.dart';
 
 void main() {
   Future<Widget> createWidgetUnderTest(
@@ -13,16 +13,13 @@ void main() {
     bool obscureText = false,
     IconData? icon,
   }) async {
-    await renderLocalizedWidget(
-      tester,
-      Scaffold(
-        body: CommonTextformField(
-          inputHint: inputHint,
-          labelText: labelText,
-          onChange: onChange ?? (String value) {},
-          obscureText: obscureText,
-          icon: icon,
-        ),
+    await tester.localizedPump(
+      CommonTextformField(
+        inputHint: inputHint,
+        labelText: labelText,
+        onChange: onChange ?? (String value) {},
+        obscureText: obscureText,
+        icon: icon,
       ),
     );
     return tester.firstWidget(find.byType(CommonTextformField));

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter_kit/common_widgets/common_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../utils/localized_widget.dart';
+import '../utils/localized_pump.dart';
 
 void main() {
   Future<Widget> createWidgetUnderTest(
@@ -13,16 +13,13 @@ void main() {
     bool isFullWidth = false,
     IconData? icon,
   }) async {
-    await renderLocalizedWidget(
-      tester,
-      Scaffold(
-        body: CommonButton(
-          text: buttonText,
-          onPressed: onPressed ?? () {},
-          isDisabled: isDisabled,
-          isFullWidth: isFullWidth,
-          icon: icon,
-        ),
+    await tester.localizedPump(
+      CommonButton(
+        text: buttonText,
+        onPressed: onPressed ?? () {},
+        isDisabled: isDisabled,
+        isFullWidth: isFullWidth,
+        icon: icon,
       ),
     );
     return tester.firstWidget(find.byType(CommonButton));
