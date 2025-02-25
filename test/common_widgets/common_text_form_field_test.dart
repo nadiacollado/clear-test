@@ -21,13 +21,14 @@ void main() {
           labelText: labelText,
           onChange: onChange ?? (String value) {},
           obscureText: obscureText,
+          icon: icon,
         ),
       ),
     );
     return tester.firstWidget(find.byType(CommonTextformField));
   }
 
-  testWidgets('CustomTextField displays labelText, hintText, and icon',
+  testWidgets('displays labelText, hintText, and icon',
       (WidgetTester tester) async {
     const String labelText = 'Username';
     const String inputHint = 'Enter your username';
@@ -42,18 +43,17 @@ void main() {
       onChange: (String text) => value.value = text,
     );
 
-    debugDumpApp();
     final Finder labelFinder = find.text(labelText);
     final Finder hintFinder = find.text(inputHint);
     final Finder iconFinder = find.byIcon(icon);
 
-    // Assert that all elements are found in the widget tree
     expect(labelFinder, findsOneWidget);
     expect(hintFinder, findsOneWidget);
     expect(iconFinder, findsOneWidget);
   });
 
-  testWidgets('CustomTextField obscureText works', (WidgetTester tester) async {
+  testWidgets('ensures obscureText is false by default',
+      (WidgetTester tester) async {
     const String labelText = 'Password';
     const String inputHint = 'Enter your password';
 
@@ -69,7 +69,8 @@ void main() {
     expect(textField.obscureText, isFalse);
   });
 
-  testWidgets('CustomTextField obscureText works', (WidgetTester tester) async {
+  testWidgets('ensures obscureText is enabled when obscureText is true',
+      (WidgetTester tester) async {
     const String labelText = 'Password';
     const String inputHint = 'Enter your password';
 
