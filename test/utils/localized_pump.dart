@@ -9,6 +9,14 @@ import 'package:go_router/go_router.dart';
 
 import 'test_router.dart';
 
+const List<LocalizationsDelegate<Object>> delegates =
+    <LocalizationsDelegate<Object>>[
+  AppLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+];
+
 extension LocalizedPump on WidgetTester {
   /// Pumps the given widget within a [MaterialApp] that is
   /// properly configured for localizations.
@@ -23,6 +31,7 @@ extension LocalizedPump on WidgetTester {
   ///
   /// You can also use the [t] getter to access the localized
   /// strings in the test.
+
   Future<void> localizedPump(
     Widget widget, {
     List<Override> overrides = const <Override>[],
@@ -44,25 +53,13 @@ extension LocalizedPump on WidgetTester {
             return useRouter
                 ? MaterialApp.router(
                     routerConfig: ref.read(testRouterProvider(initialLocation)),
-                    localizationsDelegates: const <LocalizationsDelegate<
-                        dynamic>>[
-                      AppLocalizations.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                    ],
+                    localizationsDelegates: delegates,
                     supportedLocales: AppLocalizations.supportedLocales,
                     locale: const Locale('en'),
                   )
                 : MaterialApp(
                     home: widget,
-                    localizationsDelegates: const <LocalizationsDelegate<
-                        dynamic>>[
-                      AppLocalizations.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                    ],
+                    localizationsDelegates: delegates,
                     supportedLocales: AppLocalizations.supportedLocales,
                     locale: const Locale('en'),
                   );
