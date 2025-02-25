@@ -26,14 +26,16 @@ extension LocalizedPump on WidgetTester {
   Future<void> localizedPump(
     Widget widget, {
     List<Override> overrides = const <Override>[],
-    bool useRouter = false, // Optional flag to use the test router
+    bool useRouter = false,
+    String initialLocation = '/login',
   }) async {
     await pumpWidget(
       ProviderScope(
         overrides: <Override>[
           if (useRouter)
             goRouterProvider.overrideWith(
-              (Ref<GoRouter> ref) => ref.watch(testRouterProvider),
+              (Ref<GoRouter> ref) =>
+                  ref.watch(testRouterProvider(initialLocation)),
             ),
           ...overrides,
         ],
@@ -41,7 +43,7 @@ extension LocalizedPump on WidgetTester {
           builder: (BuildContext context, WidgetRef ref, _) {
             return useRouter
                 ? MaterialApp.router(
-                    routerConfig: ref.read(testRouterProvider),
+                    routerConfig: ref.read(testRouterProvider(initialLocation)),
                     localizationsDelegates: const <LocalizationsDelegate<
                         dynamic>>[
                       AppLocalizations.delegate,
