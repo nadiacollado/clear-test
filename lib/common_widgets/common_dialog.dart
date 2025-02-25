@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> showCommonDialog({
   required BuildContext context,
   required String title,
   required String content,
   required String primaryButtonText,
+  VoidCallback? onDismissal,
   VoidCallback? onPrimaryPressed,
   String? secondaryButtonText,
   VoidCallback? onSecondaryPressed,
@@ -22,7 +24,7 @@ Future<void> showCommonDialog({
                 if (onSecondaryPressed != null) {
                   onSecondaryPressed();
                 }
-                Navigator.of(context).pop();
+                context.pop();
               },
               child: Text(secondaryButtonText),
             ),
@@ -31,12 +33,16 @@ Future<void> showCommonDialog({
               if (onPrimaryPressed != null) {
                 onPrimaryPressed();
               }
-              Navigator.of(context).pop();
+              context.pop();
             },
             child: Text(primaryButtonText),
           ),
         ],
       );
     },
-  );
+  ).then((void val) {
+    if (onDismissal != null) {
+      onDismissal();
+    }
+  });
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../common_widgets/common_button.dart';
 import '../../../../common_widgets/common_dialog.dart';
@@ -31,7 +32,10 @@ class _ForgotPasswordScreen extends ConsumerState<ForgotPasswordScreen> {
             content: context.t.auth_forgotPasswordEmail,
             primaryButtonText: context.t.dialog_dismiss,
             onPrimaryPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
+            },
+            onDismissal: () {
+              context.pop();
             },
           );
         } else {
