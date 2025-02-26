@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../common_widgets/common_button.dart';
+import '../../../../common_widgets/common_text_form_field.dart';
+import '../../../../l10n/translate.dart';
+
+class UserProfileWidget extends ConsumerStatefulWidget {
+  const UserProfileWidget({
+    super.key,
+    required this.onUsernameChanged,
+    required this.onSave,
+    this.username,
+  });
+  final ValueChanged<String> onUsernameChanged;
+  final String? username;
+  final VoidCallback onSave;
+
+  @override
+  ConsumerState<UserProfileWidget> createState() => _UserProfileWidgetState();
+}
+
+class _UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: 16,
+      children: <Widget>[
+        Text(context.t.profile_editUsername.toUpperCase()),
+        CommonTextformField(
+          labelText: widget.username ?? '',
+          inputHint: context.t.profile_username,
+          icon: Icons.person,
+          onChange: widget.onUsernameChanged,
+        ),
+        CommonButton(
+          text: context.t.profile_save,
+          onPressed: widget.onSave,
+          type: ButtonType.transparent,
+          isFullWidth: true,
+        ),
+      ],
+    );
+  }
+}

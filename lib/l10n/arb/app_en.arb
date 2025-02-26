@@ -41,5 +41,9 @@
       }
     }
   },
+  "@_PROFILE": {},
+  "profile_username": "Username",
+  "profile_editUsername": "Edit Username",
+  "profile_save": "Save",
   "@_END": {}
 }
