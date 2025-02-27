@@ -40,6 +40,7 @@ class _UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
         Text(getGreeting()),
         Text(context.t.profile_editUsername.toUpperCase()),
         CommonTextformField(
+          useController: true,
           labelText: widget.username ?? '',
           inputHint: context.t.profile_username,
           onChange: widget.onUsernameChanged,
