@@ -6,37 +6,29 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../logger/logger.dart';
 import '../../user/domain/user.dart' as app_user;
 
-part '../../../core/user/data/user_repository.g.dart';
+part 'user_repository.g.dart';
 
 class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<app_user.User?> getUser() async {
+  Stream<app_user.User?> getUserStream() {
     final String? uid = _auth.currentUser?.uid;
-    if (uid == null) return null;
+    if (uid == null) return const Stream<app_user.User?>.empty();
 
-    try {
-      final DocumentSnapshot<app_user.User> doc =
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-              .withConverter<app_user.User>(
-                fromFirestore:
-                    (DocumentSnapshot<Map<String, dynamic>> snapshot, _) =>
-                        app_user.User.fromJson(snapshot.data()!),
-                toFirestore: (app_user.User user, _) => user.toJson(),
-              )
-              .get();
-
-      return doc.data();
-    } catch (e, stackTrace) {
-      logger.error(
-        message: 'Error retrieving user: $e',
-        stack: stackTrace,
-      );
-    }
-    return null;
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .withConverter<app_user.User>(
+          fromFirestore: (DocumentSnapshot<Map<String, dynamic>> snapshot, _) =>
+              app_user.User.fromJson(snapshot.data() ?? <String, dynamic>{}),
+          toFirestore: (app_user.User user, _) => user.toJson(),
+        )
+        .snapshots()
+        .map(
+          (DocumentSnapshot<app_user.User> doc) =>
+              doc.exists ? doc.data() : null,
+        );
   }
 
   Future<void> updateUserProfile(Map<String, dynamic> updates) async {
@@ -59,3 +51,8 @@ class UserRepository {
 UserRepository userRepository(Ref ref) {
   return UserRepository();
 }
+
+final StreamProvider<app_user.User?> userStreamProvider =
+    StreamProvider<app_user.User?>((Ref ref) {
+  return ref.watch(userRepositoryProvider).getUserStream();
+});

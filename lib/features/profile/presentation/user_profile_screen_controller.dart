@@ -2,7 +2,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/logger/logger.dart';
 import '../../../core/user/data/user_repository.dart';
-import '../../../core/user/domain/user.dart';
 import '../domain/user_profile_form_state.dart';
 
 part 'user_profile_screen_controller.g.dart';
@@ -14,31 +13,7 @@ class UserProfileScreenController extends _$UserProfileScreenController {
   @override
   UserProfileFormState build() {
     _userRepository = ref.read(userRepositoryProvider);
-    _loadUserData();
-    return const UserProfileFormState(isLoading: true);
-  }
-
-  Future<void> _loadUserData() async {
-    try {
-      final User? user = await _userRepository.getUser();
-      if (user != null) {
-        logger.info(message: 'User data loaded: ${user.email}');
-        state = state.copyWith(
-          isLoading: false,
-          originalUser: user,
-          email: user.email,
-          username: user.username,
-        );
-      } else {
-        logger.warn(message: 'User data is null');
-        state = state.copyWith(isLoading: false);
-      }
-    } catch (e, stackTrace) {
-      state = state.copyWith(
-        isLoading: false,
-      );
-      logger.error(message: 'Error loading user data $e', stack: stackTrace);
-    }
+    return const UserProfileFormState();
   }
 
   void updateUsername(String username) {

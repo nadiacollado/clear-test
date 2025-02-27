@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../domain/user_profile_form_state.dart';
+import '../../../core/user/data/user_repository.dart';
+import '../../../core/user/domain/user.dart';
+
 import 'user_profile_screen_controller.dart';
 import 'user_profile_widget.dart';
 
@@ -9,27 +11,26 @@ class UserProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UserProfileFormState state =
-        ref.watch(userProfileScreenControllerProvider);
     final UserProfileScreenController controller =
         ref.read(userProfileScreenControllerProvider.notifier);
-
-    if (state.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    final AsyncValue<User?> userAsyncValue = ref.watch(userStreamProvider);
 
     return Center(
-      child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: UserProfileWidget(
-            email: state.email,
-            username: state.username,
-            onUsernameChanged: controller.updateUsername,
-            onSave: controller.saveProfile,
+      child: userAsyncValue.when(
+        data: (User? user) => SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: UserProfileWidget(
+              email: user?.email,
+              username: user?.username,
+              onUsernameChanged: controller.updateUsername,
+              onSave: controller.saveProfile,
+            ),
           ),
         ),
+        loading: () => const CircularProgressIndicator(),
+        error: (Object error, StackTrace stackTrace) => Text('Error: $error'),
       ),
     );
   }
