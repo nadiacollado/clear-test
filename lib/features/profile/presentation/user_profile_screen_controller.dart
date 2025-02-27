@@ -20,15 +20,17 @@ class UserProfileScreenController extends _$UserProfileScreenController {
     state = state.copyWith(username: username);
   }
 
-  Future<void> saveProfile() async {
+  Future<bool> saveProfile() async {
     final Map<String, dynamic> updates = state.getChangedFields();
-    if (updates.isEmpty) return;
+    if (updates.isEmpty) return false;
 
     try {
       await _userRepository.updateUserProfile(updates);
       logger.info(message: 'Profile updated successfully.');
+      return true;
     } catch (e, stackTrace) {
-      logger.error(message: 'Error saving profile $e', stack: stackTrace);
+      logger.error(message: 'Error saving profile: $e', stack: stackTrace);
+      return false;
     }
   }
 }

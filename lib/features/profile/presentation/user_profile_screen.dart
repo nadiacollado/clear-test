@@ -15,6 +15,28 @@ class UserProfileScreen extends ConsumerWidget {
         ref.read(userProfileScreenControllerProvider.notifier);
     final AsyncValue<User?> userAsyncValue = ref.watch(userStreamProvider);
 
+    void _showDialog({
+      required bool success,
+    }) {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(success ? 'Success' : 'Error'),
+          content: Text(
+            success
+                ? 'Profile updated successfully!'
+                : 'Failed to update profile. Please try again.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Center(
       child: userAsyncValue.when(
         data: (User? user) => SingleChildScrollView(
@@ -25,7 +47,11 @@ class UserProfileScreen extends ConsumerWidget {
               email: user?.email,
               username: user?.username,
               onUsernameChanged: controller.updateUsername,
-              onSave: controller.saveProfile,
+              onSave: () async {
+                final bool status = await controller.saveProfile();
+                if (!context.mounted) return;
+                _showDialog(success: status);
+              },
             ),
           ),
         ),
