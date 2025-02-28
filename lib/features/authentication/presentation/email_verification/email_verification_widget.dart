@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common_widgets/common_button.dart';
+import '../../../../l10n/translate.dart';
 
 class EmailVerificationWidget extends ConsumerWidget {
   const EmailVerificationWidget({super.key, required this.onSendEmail});
@@ -21,22 +22,22 @@ class EmailVerificationWidget extends ConsumerWidget {
             size: 75,
             color: Colors.blue,
           ),
-          const Text(
-            'Please verify your email address. A confirmation link has been sent to your email.',
+          Text(
+            context.t.auth_please_verify_email,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'Having Trouble?',
+              Text(
+                context.t.global_having_trouble,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
               CommonButton(
                 type: ButtonType.transparent,
-                text: 'Resend Email',
+                text: context.t.auth_resend_email,
                 onPressed: () => onSendEmail(),
               ),
             ],

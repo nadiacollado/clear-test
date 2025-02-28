@@ -25,9 +25,9 @@ class EmailVerificationScreen extends ConsumerWidget {
               if (authStatus == AuthStatus.successful) {
                 showCommonDialog(
                   context: context,
-                  title: 'Email Sent!',
-                  content: 'Verification has been sent',
-                  primaryButtonText: 'Dismiss',
+                  title: context.t.global_emailSent,
+                  content: context.t.auth_verification_email_sent,
+                  primaryButtonText: context.t.dialog_dismiss,
                 );
               } else {
                 showCommonDialog(
@@ -36,7 +36,7 @@ class EmailVerificationScreen extends ConsumerWidget {
                   content: FirebaseAuthExceptionHandler.generateErrorMessage(
                     authStatus,
                   ),
-                  primaryButtonText: 'Dismiss',
+                  primaryButtonText: context.t.dialog_dismiss,
                 );
               }
             },
