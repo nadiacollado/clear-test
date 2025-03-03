@@ -37,9 +37,11 @@ void main() {
     verify(() => mockAuthRepository.sendVerificationEmail()).called(1);
   });
 
-  test('sendVerificationEmailAddress returns ', () async {
+  test(
+      'sendVerificationEmailAddress returns error message when given too many requests',
+      () async {
     when(() => mockAuthRepository.sendVerificationEmail())
-        .thenAnswer((_) async => AuthStatus.invalidEmail);
+        .thenAnswer((_) async => AuthStatus.tooManyRequests);
 
     final EmailVerificationScreenController controller =
         container.read(emailVerificationScreenControllerProvider.notifier);
