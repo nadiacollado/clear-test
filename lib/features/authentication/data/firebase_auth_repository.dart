@@ -54,7 +54,14 @@ class AuthRepository {
 
       logger.info(message: 'User created: ${response.data}');
       _status = AuthStatus.emailNotVerified;
-      sendVerificationEmail();
+      if (response.data.isNotEmpty) {
+        final UserCredential credential = await _auth
+            .signInWithEmailAndPassword(email: email, password: password);
+
+        if (credential.user != null) {
+          await sendVerificationEmail();
+        }
+      }
     } on FirebaseAuthException catch (e, stackTrace) {
       _status = FirebaseAuthExceptionHandler.handleAuthException(e);
       logger.error(message: e.toString(), stack: stackTrace);
