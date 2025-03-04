@@ -64,7 +64,7 @@ void main() {
   test('saveProfile should return false and log error on failure', () async {
     controller.updateUsername('newUsername');
     when(() => mockUserRepository.updateUserProfile(any()))
-        .thenThrow(Exception('Update failed'));
+        .thenThrow(Exception());
 
     final bool result = await controller.saveProfile();
     expect(result, isFalse);

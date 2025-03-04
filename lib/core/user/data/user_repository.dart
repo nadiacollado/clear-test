@@ -51,8 +51,3 @@ class UserRepository {
 UserRepository userRepository(Ref ref) {
   return UserRepository();
 }
-
-final StreamProvider<app_user.User?> userStreamProvider =
-    StreamProvider<app_user.User?>((Ref ref) {
-  return ref.watch(userRepositoryProvider).getUserStream();
-});

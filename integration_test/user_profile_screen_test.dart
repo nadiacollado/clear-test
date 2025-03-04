@@ -69,7 +69,7 @@ void main() {
   testWidgets('Displays error message when user stream fails',
       (WidgetTester tester) async {
     when(() => mockUserRepository.getUserStream())
-        .thenAnswer((_) => Stream.error('Error loading user'));
+        .thenAnswer((_) => Stream.error(tester.t.profile_error));
 
     await tester.localizedPump(
       const UserProfileScreen(),
@@ -80,7 +80,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Error loading user'), findsOneWidget);
+    expect(find.textContaining(tester.t.profile_error), findsOneWidget);
   });
 
   testWidgets('Updates username and calls saveProfile()',
@@ -105,7 +105,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField), 'newUser');
 
-    final Finder saveButton = find.text('Save');
+    final Finder saveButton = find.text(tester.t.profile_save);
     await tester.pumpAndSettle();
     await tester.tap(saveButton);
     await tester.pumpAndSettle();
@@ -131,12 +131,15 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final Finder saveButton = find.text('Save');
+    final Finder saveButton = find.text(tester.t.profile_save);
     await tester.pumpAndSettle();
     await tester.tap(saveButton);
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Profile updated successfully'), findsOneWidget);
+    expect(
+      find.textContaining(tester.t.profile_successMessage),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Displays error dialog on failed save',
@@ -157,12 +160,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final Finder saveButton = find.text('Save');
+    final Finder saveButton = find.text(tester.t.profile_save);
     await tester.pumpAndSettle();
     await tester.tap(saveButton);
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Failed to update profile. Please try again.'),
-        findsOneWidget);
+    expect(
+      find.textContaining(tester.t.profile_errorMessage),
+      findsOneWidget,
+    );
   });
 }
