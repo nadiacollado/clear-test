@@ -1,5 +1,3 @@
-// ignore_for_file: strict_raw_type, always_specify_types
-
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,14 +47,14 @@ class AuthRepository {
 
   Future<AuthStatus> createUser(String email, String password) async {
     try {
-      final HttpsCallableResult response = await FirebaseFunctions.instance
-          .httpsCallable('createUser')
-          .call(<String, String>{'email': email, 'password': password});
+      final HttpsCallableResult<Map<String, dynamic>> response =
+          await FirebaseFunctions.instance
+              .httpsCallable('createUser')
+              .call(<String, String>{'email': email, 'password': password});
 
       logger.info(message: 'User created: ${response.data}');
       _status = AuthStatus.emailNotVerified;
       sendVerificationEmail();
-
     } on FirebaseAuthException catch (e, stackTrace) {
       _status = FirebaseAuthExceptionHandler.handleAuthException(e);
       logger.error(message: e.toString(), stack: stackTrace);
