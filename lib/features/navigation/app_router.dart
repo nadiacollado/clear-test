@@ -9,7 +9,7 @@ import '../authentication/presentation/forgot_password_screen/forgot_password_sc
 import '../authentication/presentation/login_screen/login_screen.dart';
 import '../authentication/presentation/sign_up_screen/sign_up_screen.dart';
 import '../counter/presentation/counter_screen.dart';
-import '../profile/presentation/edit_user_profile_screen_widget.dart';
+import '../profile/presentation/edit_user_profile_screen.dart';
 import '../profile/presentation/user_profile_screen.dart';
 
 part 'app_router.g.dart';
