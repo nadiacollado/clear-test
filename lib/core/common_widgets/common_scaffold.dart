@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/navigation/presentation/nav_drawer.dart';
 import '../../l10n/translate.dart';
 import '../theme/theme_controller.dart';
 
@@ -19,29 +20,29 @@ class CommonScaffold extends ConsumerWidget {
     final ThemeMode themeMode = ref.watch(themeControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title ?? context.t.global_title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              switch (themeMode) {
-                ThemeMode.light => Icons.dark_mode,
-                ThemeMode.dark => Icons.brightness_auto,
-                ThemeMode.system => Icons.light_mode,
+        appBar: AppBar(
+          title: Text(title ?? context.t.global_title),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                switch (themeMode) {
+                  ThemeMode.light => Icons.dark_mode,
+                  ThemeMode.dark => Icons.brightness_auto,
+                  ThemeMode.system => Icons.light_mode,
+                },
+              ),
+              onPressed: () {
+                ref.read(themeControllerProvider.notifier).toggleTheme();
+              },
+              tooltip: switch (themeMode) {
+                ThemeMode.light => 'Switch to dark mode',
+                ThemeMode.dark => 'Switch to system mode',
+                ThemeMode.system => 'Switch to light mode',
               },
             ),
-            onPressed: () {
-              ref.read(themeControllerProvider.notifier).toggleTheme();
-            },
-            tooltip: switch (themeMode) {
-              ThemeMode.light => 'Switch to dark mode',
-              ThemeMode.dark => 'Switch to system mode',
-              ThemeMode.system => 'Switch to light mode',
-            },
-          ),
-        ],
-      ),
-      body: body,
-    );
+          ],
+        ),
+        body: body,
+        drawer: const NavDrawer());
   }
 }
