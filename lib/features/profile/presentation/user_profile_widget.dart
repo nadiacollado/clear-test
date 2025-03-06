@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../../core/common_widgets/common_text_form_field.dart';
 import '../../../../l10n/translate.dart';
+import '../../navigation/app_router.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
   const UserProfileWidget({
     super.key,
-    required this.onUsernameChanged,
-    required this.onSave,
     this.username,
     this.email,
   });
-  final ValueChanged<String> onUsernameChanged;
   final String? username;
   final String? email;
-  final VoidCallback onSave;
 
   @override
   ConsumerState<UserProfileWidget> createState() => _UserProfileWidgetState();
@@ -37,16 +34,9 @@ class _UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
       spacing: 16,
       children: <Widget>[
         Text(getGreeting()),
-        Text(context.t.profile_editUsername.toUpperCase()),
-        CommonTextFormField(
-          useController: true,
-          labelText: widget.username ?? '',
-          inputHint: context.t.profile_username,
-          onChange: widget.onUsernameChanged,
-        ),
         TextButton(
-          onPressed: widget.onSave,
-          child: Text(context.t.profile_save),
+          onPressed: () => context.goNamed(AppRoute.editProfile.name),
+          child: Text(context.t.profile_edit_profile),
         ),
       ],
     );
