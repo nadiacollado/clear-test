@@ -5,7 +5,6 @@ import '../../../core/logger/logger.dart';
 import '../data/firebase_auth_repository.dart';
 import '../domain/auth_state.dart';
 import '../domain/auth_status.dart';
-import '../domain/firebase_auth_exception_handler.dart';
 
 part 'auth_state_notifier.g.dart';
 
