@@ -7,6 +7,7 @@ class User {
     this.age,
     this.location,
     this.pronouns,
+    this.bio,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class User {
       age: json['age'] as String?,
       location: json['location'] as String?,
       pronouns: json['pronouns'] as String?,
+      bio: json['bio'] as String?,
     );
   }
 
@@ -28,6 +30,7 @@ class User {
   final String? age;
   final String? location;
   final String? pronouns;
+  final String? bio;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -38,6 +41,7 @@ class User {
       'age': age,
       'location': location,
       'pronouns': pronouns,
+      'bio': bio,
     };
   }
 }

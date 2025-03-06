@@ -9,6 +9,7 @@ class UserProfileFormState {
     this.age,
     this.location,
     this.pronouns,
+    this.bio,
     this.originalUser,
   });
   final String? email;
@@ -18,6 +19,7 @@ class UserProfileFormState {
   final String? age;
   final String? location;
   final String? pronouns;
+  final String? bio;
   final User? originalUser;
 
   UserProfileFormState copyWith({
@@ -28,6 +30,7 @@ class UserProfileFormState {
     String? age,
     String? location,
     String? pronouns,
+    String? bio,
     User? originalUser,
   }) {
     return UserProfileFormState(
@@ -38,6 +41,7 @@ class UserProfileFormState {
       age: age ?? this.age,
       location: location ?? this.location,
       pronouns: pronouns ?? this.pronouns,
+      bio: bio ?? this.bio,
       originalUser: originalUser ?? this.originalUser,
     );
   }
@@ -52,6 +56,7 @@ class UserProfileFormState {
     if (age != originalUser?.age) updates['age'] = age;
     if (location != originalUser?.location) updates['location'] = location;
     if (pronouns != originalUser?.pronouns) updates['pronouns'] = pronouns;
+    if (bio != originalUser?.bio) updates['bio'] = bio;
 
     return updates;
   }
