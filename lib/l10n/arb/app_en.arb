@@ -3,6 +3,7 @@
   "@_GLOBAL": {},
   "global_title": "RetroSpace",
   "global_genericErrorMessage": "Please try again Later",
+  "global_genericErrorTitle": "Unexpected Error",
   "global_emailSent": "Email Sent",
   "global_having_trouble": "Having Trouble?",
   "@global_title": {

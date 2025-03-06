@@ -26,37 +26,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!mounted) return;
 
     final AsyncValue<AuthState> authState = ref.read(authStateNotifierProvider);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      authState.when(
-        data: (AuthState authState) {
-          if (authState.status == AuthStatus.authenticated) {
-            if (mounted) {
-              context.goNamed(AppRoute.counter.name);
-            }
-          } else if (authState.status == AuthStatus.emailNotVerified) {
-            context.goNamed(AppRoute.verifyEmail.name);
-          } else {
-            showCommonDialog(
-              context: context,
-              title: context.t.auth_unableToLogin,
-              content: FirebaseAuthExceptionHandler.generateErrorMessage(
-                authState.status,
-              ),
-              primaryButtonText: 'Dismiss',
-            );
+    authState.when(
+      data: (AuthState authState) {
+        if (authState.status == AuthStatus.authenticated) {
+          if (mounted) {
+            context.goNamed(AppRoute.profile.name);
           }
-        },
-        error: (Object err, StackTrace stack) {
+        } else if (authState.status == AuthStatus.emailNotVerified) {
+          context.push(AppRoute.verifyEmail.path);
+        } else {
           showCommonDialog(
             context: context,
-            title: 'Error',
-            content: 'An unexpected error occurred. Please try again later.',
-            primaryButtonText: 'Dismiss',
+            title: context.t.auth_unableToLogin,
+            content: FirebaseAuthExceptionHandler.generateErrorMessage(
+              authState.status,
+            ),
+            primaryButtonText: context.t.dialog_dismiss,
           );
-        },
-        loading: () {},
-      );
-    });
+        }
+      },
+      error: (Object err, StackTrace stack) {
+        showCommonDialog(
+          context: context,
+          title: context.t.global_genericErrorTitle,
+          content: context.t.profile_errorMessage,
+          primaryButtonText: context.t.dialog_dismiss,
+        );
+      },
+      loading: () {},
+    );
   }
 
   @override
