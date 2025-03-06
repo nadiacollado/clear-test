@@ -49,8 +49,7 @@ class EditUserProfileWidget extends ConsumerStatefulWidget {
 class _EditUserProfileWidgetState extends ConsumerState<EditUserProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 24),
+    return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

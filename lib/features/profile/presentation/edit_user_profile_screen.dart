@@ -33,7 +33,7 @@ class EditUserProfileScreen extends ConsumerWidget {
           return SingleChildScrollView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.all(20),
               child: EditUserProfileWidget(
                 email: user?.email,
                 username: user?.username,

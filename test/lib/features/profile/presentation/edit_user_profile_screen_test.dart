@@ -55,7 +55,11 @@ void main() {
     await createWidgetUnderTest(tester);
     await tester.pump();
 
-    final Finder usernameField = find.byType(TextField);
+    final Finder usernameField = find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is TextField &&
+          widget.decoration?.hintText == tester.t.profile_username,
+    );
 
     expect(usernameField, findsOneWidget);
 
@@ -75,8 +79,21 @@ void main() {
     await createWidgetUnderTest(tester);
     await tester.pump();
 
-    final Finder saveButton = find.text(tester.t.profile_save);
+    final Finder usernameField = find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is TextField &&
+          widget.decoration?.hintText == tester.t.profile_username,
+    );
 
+    expect(usernameField, findsOneWidget);
+
+    await tester.enterText(usernameField, 'newUsername');
+    await tester.pumpAndSettle();
+
+    final Finder saveButton = find.text(tester.t.profile_save);
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(saveButton);
     expect(saveButton, findsOneWidget);
 
     await tester.tap(saveButton);

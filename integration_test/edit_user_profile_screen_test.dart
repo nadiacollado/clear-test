@@ -53,10 +53,18 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField), 'newUser');
+    final Finder usernameField = find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is TextField &&
+          widget.decoration?.hintText == tester.t.profile_username,
+    );
+
+    await tester.enterText(usernameField, 'newUser');
 
     final Finder saveButton = find.text(tester.t.profile_save);
+
     await tester.pumpAndSettle();
+    await tester.ensureVisible(saveButton);
     await tester.tap(saveButton);
     await tester.pumpAndSettle();
 
@@ -82,6 +90,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final Finder saveButton = find.text(tester.t.profile_save);
+
     await tester.pumpAndSettle();
     await tester.tap(saveButton);
     await tester.pumpAndSettle();
