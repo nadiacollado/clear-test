@@ -51,5 +51,7 @@
   "profile_errorMessage": "Failed to update profile. Please try again.",
   "profile_ok": "Ok",
   "profile_hello": "Hello",
+  "profile_edit_profile": "Edit Profile",
+  "profile_go_to_profile": "Go to Profile",
   "@_END": {}
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/core/user/domain/user.dart';
 import 'package:flutter_starter_kit/features/profile/domain/user_profile_form_state.dart';
-import 'package:flutter_starter_kit/features/profile/presentation/user_profile_screen.dart';
+import 'package:flutter_starter_kit/features/profile/presentation/edit_user_profile_screen.dart';
 import 'package:flutter_starter_kit/features/profile/presentation/user_profile_screen_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -25,12 +25,13 @@ void main() {
 
   Future<Widget> createWidgetUnderTest(WidgetTester tester) async {
     await tester.localizedPump(
-      const UserProfileScreen(),
+      const EditUserProfileScreen(),
       overrides: <Override>[
         userProfileScreenControllerProvider.overrideWith(() => mockController),
       ],
     );
-    return tester.firstWidget(find.byType(UserProfileScreen));
+
+    return tester.firstWidget(find.byType(EditUserProfileScreen));
   }
 
   testWidgets('Shows loading indicator while fetching user data',
@@ -43,28 +44,47 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 
-  testWidgets('Displays error message when fetching user fails',
+  testWidgets('Calls updateUsername when username field is changed',
       (WidgetTester tester) async {
-    when(() => mockController.getUser()).thenAnswer(
-      (_) => Stream<User?>.error(Exception('Failed to fetch user data')),
-    );
-
-    await createWidgetUnderTest(tester);
-    await tester.pump();
-
-    expect(find.textContaining('Failed to fetch user data'), findsOneWidget);
-  });
-
-  testWidgets('Displays user profile when data is available',
-      (WidgetTester tester) async {
-    const User user = User(email: 'test@example.com', username: 'test user');
+    const User user = User(email: 'test@example.com', username: 'testUser');
 
     when(() => mockController.getUser())
         .thenAnswer((_) => Stream<User?>.value(user));
+    when(() => mockController.updateUsername(any())).thenReturn(null);
 
     await createWidgetUnderTest(tester);
     await tester.pump();
 
-    expect(find.textContaining('test user'), findsOneWidget);
+    final Finder usernameField = find.byType(TextField);
+
+    expect(usernameField, findsOneWidget);
+
+    await tester.enterText(usernameField, 'newUsername');
+
+    verify(() => mockController.updateUsername('newUsername')).called(1);
+  });
+
+  testWidgets('Calls saveProfile and shows success dialog when saving succeeds',
+      (WidgetTester tester) async {
+    const User user = User(email: 'test@example.com', username: 'testUser');
+
+    when(() => mockController.getUser())
+        .thenAnswer((_) => Stream<User?>.value(user));
+    when(() => mockController.saveProfile()).thenAnswer((_) async => true);
+
+    await createWidgetUnderTest(tester);
+    await tester.pump();
+
+    final Finder saveButton = find.text(tester.t.profile_save);
+
+    expect(saveButton, findsOneWidget);
+
+    await tester.tap(saveButton);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.textContaining(tester.t.profile_successMessage),
+      findsOneWidget,
+    );
   });
 }
