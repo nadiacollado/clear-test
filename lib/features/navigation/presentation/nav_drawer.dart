@@ -44,14 +44,18 @@ class NavDrawer extends ConsumerWidget {
               NavDrawerItem(
                 icon: Icons.home,
                 title: context.t.nav_home,
-                onTap: () => {
+                onTap: () => <void>{
+                  Navigator.pop(context),
                   context.goNamed(AppRoute.profile.name),
                 },
               ),
               NavDrawerItem(
                 icon: Icons.dynamic_form_outlined,
                 title: context.t.nav_editProfile,
-                onTap: () => context.goNamed(AppRoute.editProfile.name),
+                onTap: () => <void>{
+                  Navigator.pop(context),
+                  context.goNamed(AppRoute.editProfile.name)
+                },
               ),
               NavDrawerItem(
                 icon: Icons.logout,
