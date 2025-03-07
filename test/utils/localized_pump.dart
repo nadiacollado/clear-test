@@ -76,8 +76,6 @@ extension LocalizedPump on WidgetTester {
     );
   }
 
-  AuthStatus authStatus;
-
   AppLocalizations get t {
     return AppLocalizationsEn();
   }
