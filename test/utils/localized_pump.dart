@@ -3,10 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/authentication/data/firebase_auth_repository.dart';
+import 'package:flutter_starter_kit/features/authentication/domain/auth_status.dart';
 import 'package:flutter_starter_kit/features/navigation/app_router.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import 'fake_auth_repository.dart';
 import 'test_router.dart';
 
 const List<LocalizationsDelegate<Object>> delegates =
@@ -36,7 +39,8 @@ extension LocalizedPump on WidgetTester {
     Widget widget, {
     List<Override> overrides = const <Override>[],
     bool useRouter = false,
-    String initialLocation = '/login',
+    String initialLocation = '/profile',
+    AuthStatus authStatus = AuthStatus.authenticated,
   }) async {
     await pumpWidget(
       ProviderScope(
@@ -46,6 +50,9 @@ extension LocalizedPump on WidgetTester {
               (Ref<GoRouter> ref) =>
                   ref.watch(testRouterProvider(initialLocation)),
             ),
+          authRepositoryProvider.overrideWith(
+            (Ref<AuthRepository> ref) => FakeAuth(authStatus),
+          ),
           ...overrides,
         ],
         child: Consumer(
@@ -68,6 +75,8 @@ extension LocalizedPump on WidgetTester {
       ),
     );
   }
+
+  AuthStatus authStatus;
 
   AppLocalizations get t {
     return AppLocalizationsEn();

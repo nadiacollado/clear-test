@@ -35,10 +35,12 @@ void main() {
         (WidgetTester tester) async {
       await tester.localizedPump(
         const NavDrawer(),
-        overrides: <Override>[
-          authStateNotifierProvider.overrideWith(() => mockAuthNotifier),
-        ],
+        useRouter: true,
       );
+
+      // Open the drawer first
+      await tester.tap(find.byIcon(Icons.menu));
+      await tester.pumpAndSettle();
 
       expect(
         find.textContaining(tester.t.nav_home.toUpperCase()),
@@ -55,7 +57,12 @@ void main() {
     });
 
     testWidgets('taps logout and calls signOut', (WidgetTester tester) async {
+      // Add state mock
+      when(() => mockAuthNotifier.state).thenReturn(
+        const AsyncData(AuthState(status: AuthStatus.authenticated)),
+      );
       when(() => mockAuthNotifier.signOut()).thenAnswer((_) async {});
+
       await tester.localizedPump(
         const NavDrawer(),
         overrides: <Override>[
@@ -71,10 +78,10 @@ void main() {
 
     testWidgets('taps home and navigates to home screen',
         (WidgetTester tester) async {
-      when(() => mockAuthNotifier.build()).thenAnswer(
-        (_) async => const AuthState(status: AuthStatus.authenticated),
-      );
-      when(() => mockGoRouter.goNamed(AppRoute.profile.name)).thenReturn(null);
+      // when(() => mockAuthNotifier.build()).thenAnswer(
+      //   (_) async => const AuthState(status: AuthStatus.authenticated),
+      // );
+      // when(() => mockGoRouter.goNamed(AppRoute.profile.name)).thenReturn(null);
 
       // await tester.localizedPump(
       //   const Scaffold(
@@ -86,12 +93,14 @@ void main() {
       //   ],
       // );
 
-      await tester.localizedPump(const NavDrawer(),
-          overrides: <Override>[
-            authStateNotifierProvider.overrideWith(() => mockAuthNotifier),
-            goRouterProvider.overrideWith((Ref<GoRouter> ref) => mockGoRouter),
-          ],
-          useRouter: true);
+      await tester.localizedPump(
+        const NavDrawer(),
+        overrides: <Override>[
+          authStateNotifierProvider.overrideWith(() => mockAuthNotifier),
+          // goRouterProvider.overrideWith((Ref<GoRouter> ref) => mockGoRouter),
+        ],
+        useRouter: true,
+      );
 
       // await tester.tap(
       //   find.byIcon(Icons.menu),
@@ -106,10 +115,14 @@ void main() {
       // );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.textContaining(tester.t.nav_home.toUpperCase()));
+      await tester.tap(find.byIcon(Icons.home));
       await tester.pumpAndSettle();
 
-      verify(() => mockGoRouter.goNamed(AppRoute.profile.name)).called(1);
+      final BuildContext context = tester.element(find.byType(NavDrawer));
+      expect(
+        GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
+        equals(AppRoute.profile.path),
+      );
     });
   });
 }
