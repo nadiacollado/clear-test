@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../l10n/translate.dart';
 import '../../authentication/application/auth_state_notifier.dart';
 import '../app_router.dart';
+import 'nav_drawer_item.dart';
 
 class NavDrawer extends ConsumerWidget {
   const NavDrawer({
@@ -40,47 +41,23 @@ class NavDrawer extends ConsumerWidget {
                   ),
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: Text(
-                  context.t.nav_home.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                onTap: () {
-                  context.goNamed(AppRoute.profile.name);
+              NavDrawerItem(
+                icon: Icons.home,
+                title: context.t.nav_home,
+                onTap: () => {
+                  context.goNamed(AppRoute.profile.name),
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.dynamic_form_outlined),
-                title: Text(
-                  context.t.nav_editProfile.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                onTap: () {
-                  context.goNamed(AppRoute.editProfile.name);
-                },
+              NavDrawerItem(
+                icon: Icons.dynamic_form_outlined,
+                title: context.t.nav_editProfile,
+                onTap: () => context.goNamed(AppRoute.editProfile.name),
               ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: Text(
-                  context.t.nav_logout.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
+              NavDrawerItem(
+                icon: Icons.logout,
+                title: context.t.nav_logout,
                 onTap: () async {
                   await authNotifier.signOut();
-
                   if (context.mounted) Navigator.pop(context);
                 },
               ),
