@@ -155,7 +155,7 @@ class _EditUserProfileWidgetState extends ConsumerState<EditUserProfileWidget> {
     } else {
       final int? age = int.tryParse(value);
       if (age == null || age < 0 || age > 120) {
-        return 'Enter a valid age';
+        return context.t.profile_ageError;
       }
     }
     return null;
