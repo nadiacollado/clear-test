@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../l10n/translate.dart';
+import '../../../l10n/translate.dart';
 
-class CommonPublicScaffold extends ConsumerWidget {
-  const CommonPublicScaffold(
+class AuthScaffold extends ConsumerWidget {
+  const AuthScaffold(
     this.body, {
     super.key,
     this.title,

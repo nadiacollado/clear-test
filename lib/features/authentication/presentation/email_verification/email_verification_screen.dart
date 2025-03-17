@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/common_widgets/common_dialog.dart';
-import '../../../../core/common_widgets/common_public_scaffold.dart';
 import '../../../../l10n/translate.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
+import '../auth_scaffold.dart';
 import 'email_verification_screen_controller.dart';
 import 'email_verification_widget.dart';
 
@@ -17,7 +17,7 @@ class EmailVerificationScreen extends ConsumerWidget {
     final EmailVerificationScreenController controller =
         ref.watch(emailVerificationScreenControllerProvider.notifier);
 
-    return CommonPublicScaffold(
+    return AuthScaffold(
       Center(
         child: EmailVerificationWidget(
           onSendEmail: () async {

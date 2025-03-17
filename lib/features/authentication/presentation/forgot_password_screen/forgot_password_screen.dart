@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/common_widgets/common_dialog.dart';
 import '../../../../core/common_widgets/common_full_width.dart';
-import '../../../../core/common_widgets/common_public_scaffold.dart';
 import '../../../../core/common_widgets/common_text_form_field.dart';
 import '../../../../l10n/translate.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
 import '../../domain/forgot_password_form_state.dart';
+import '../auth_scaffold.dart';
 import 'forgot_password_screen_controller.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
@@ -66,7 +66,7 @@ class _ForgotPasswordScreen extends ConsumerState<ForgotPasswordScreen> {
         ref.read(forgotPasswordScreenControllerProvider.notifier);
     final bool enabled = !state.isResetPasswordDisabled;
 
-    return CommonPublicScaffold(
+    return AuthScaffold(
       Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

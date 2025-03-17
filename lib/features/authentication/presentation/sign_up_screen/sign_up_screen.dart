@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/common_widgets/common_dialog.dart';
-import '../../../../core/common_widgets/common_public_scaffold.dart';
 import '../../../../features/authentication/presentation/sign_up_screen/sign_up_widget.dart';
 import '../../../../l10n/translate.dart';
 import '../../../navigation/app_router.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
 import '../../domain/sign_up_form_state.dart';
+import '../auth_scaffold.dart';
 import 'sign_up_screen_controller.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -60,7 +60,7 @@ class _SignUpState extends ConsumerState<SignUpScreen> {
     final SignUpScreenController controller =
         ref.read(signUpScreenControllerProvider.notifier);
 
-    return CommonPublicScaffold(
+    return AuthScaffold(
       Stack(
         children: <Widget>[
           Center(

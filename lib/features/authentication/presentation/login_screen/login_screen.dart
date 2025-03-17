@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/common_widgets/common_dialog.dart';
-import '../../../../core/common_widgets/common_public_scaffold.dart';
 import '../../../../features/authentication/presentation/login_screen/login_widget.dart';
 import '../../../../l10n/translate.dart';
 import '../../../navigation/app_router.dart';
@@ -12,6 +11,7 @@ import '../../domain/auth_state.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
 import '../../domain/login_form_state.dart';
+import '../auth_scaffold.dart';
 import 'login_screen_controller.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -66,7 +66,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final LoginScreenController controller =
         ref.read(loginScreenControllerProvider.notifier);
 
-    return CommonPublicScaffold(
+    return AuthScaffold(
       Stack(
         children: <Widget>[
           SizedBox.expand(
