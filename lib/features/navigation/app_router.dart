@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/common_widgets/common_scaffold.dart';
 import '../authentication/application/auth_state_notifier.dart';
 import '../authentication/domain/auth_state.dart';
 import '../authentication/domain/auth_status.dart';
@@ -45,7 +44,7 @@ GoRouter goRouter(Ref ref) {
         name: AppRoute.login.name,
         pageBuilder: (BuildContext context, GoRouterState state) =>
             const NoTransitionPage<dynamic>(
-          child: CommonScaffold(LoginScreen()),
+          child: LoginScreen(),
         ),
         routes: <RouteBase>[
           GoRoute(
@@ -53,7 +52,7 @@ GoRouter goRouter(Ref ref) {
             name: AppRoute.signUp.name,
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 const NoTransitionPage<dynamic>(
-              child: CommonScaffold(SignUpScreen()),
+              child: SignUpScreen(),
             ),
           ),
           GoRoute(
@@ -61,7 +60,7 @@ GoRouter goRouter(Ref ref) {
             name: AppRoute.forgotPassword.name,
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 const NoTransitionPage<dynamic>(
-              child: CommonScaffold(ForgotPasswordScreen()),
+              child: ForgotPasswordScreen(),
             ),
           ),
         ],
@@ -71,7 +70,7 @@ GoRouter goRouter(Ref ref) {
         name: AppRoute.verifyEmail.name,
         pageBuilder: (BuildContext context, GoRouterState state) =>
             const NoTransitionPage<dynamic>(
-          child: CommonScaffold(EmailVerificationScreen()),
+          child: EmailVerificationScreen(),
         ),
       ),
       GoRoute(
@@ -79,7 +78,7 @@ GoRouter goRouter(Ref ref) {
         name: AppRoute.counter.name,
         pageBuilder: (BuildContext context, GoRouterState state) =>
             const NoTransitionPage<dynamic>(
-          child: CommonScaffold(CounterScreen()),
+          child: CounterScreen(),
         ),
       ),
       GoRoute(
@@ -87,7 +86,7 @@ GoRouter goRouter(Ref ref) {
         name: AppRoute.profile.name,
         pageBuilder: (BuildContext context, GoRouterState state) =>
             const NoTransitionPage<dynamic>(
-          child: CommonScaffold(UserProfileScreen()),
+          child: UserProfileScreen(),
         ),
         routes: <RouteBase>[
           GoRoute(
@@ -95,7 +94,7 @@ GoRouter goRouter(Ref ref) {
             name: AppRoute.editProfile.name,
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 const NoTransitionPage<dynamic>(
-              child: CommonScaffold(EditUserProfileScreen()),
+              child: EditUserProfileScreen(),
             ),
           ),
         ],

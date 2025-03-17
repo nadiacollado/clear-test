@@ -9,6 +9,7 @@ import '../../../../l10n/translate.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
 import '../../domain/forgot_password_form_state.dart';
+import '../auth_scaffold.dart';
 import 'forgot_password_screen_controller.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
@@ -64,30 +65,34 @@ class _ForgotPasswordScreen extends ConsumerState<ForgotPasswordScreen> {
     final ForgotPasswordScreenController controller =
         ref.read(forgotPasswordScreenControllerProvider.notifier);
     final bool enabled = !state.isResetPasswordDisabled;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 16,
-          children: <Widget>[
-            Text(
-              context.t.auth_forgotPassword,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            CommonTextFormField(
-              inputHint: context.t.auth_enterEmail,
-              onChange: controller.updateEmail,
-              labelText: context.t.auth_email,
-            ),
-            CommonFullWidth(
-              child: FilledButton(
-                onPressed: enabled ? _onForgotPassword : null,
-                child: Text(context.t.auth_resetPassword),
+
+    return AuthScaffold(
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: <Widget>[
+              Text(
+                context.t.auth_forgotPassword,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              CommonTextFormField(
+                inputHint: context.t.auth_enterEmail,
+                onChange: controller.updateEmail,
+                labelText: context.t.auth_email,
+              ),
+              CommonFullWidth(
+                child: FilledButton(
+                  onPressed: enabled ? _onForgotPassword : null,
+                  child: Text(context.t.auth_resetPassword),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

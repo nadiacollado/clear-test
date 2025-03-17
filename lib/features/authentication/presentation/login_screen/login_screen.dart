@@ -11,6 +11,7 @@ import '../../domain/auth_state.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
 import '../../domain/login_form_state.dart';
+import '../auth_scaffold.dart';
 import 'login_screen_controller.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -65,33 +66,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final LoginScreenController controller =
         ref.read(loginScreenControllerProvider.notifier);
 
-    return Stack(
-      children: <Widget>[
-        SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: LoginWidget(
-              isLoginDisabled: state.isLoginDisabled,
-              onLogin: () {
-                if (!state.isLoading) {
-                  _onLogin(controller);
-                }
-              },
-              onEmailChanged: (String value) =>
-                  setState(() => controller.updateEmail(value)),
-              onPasswordChanged: (String value) =>
-                  setState(() => controller.updatePassword(value)),
-              onCreateAccount: () => context.goNamed(AppRoute.signUp.name),
-              onForgotPassword: () =>
-                  context.pushNamed(AppRoute.forgotPassword.name),
+    return AuthScaffold(
+      Stack(
+        children: <Widget>[
+          SizedBox.expand(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: LoginWidget(
+                isLoginDisabled: state.isLoginDisabled,
+                onLogin: () {
+                  if (!state.isLoading) {
+                    _onLogin(controller);
+                  }
+                },
+                onEmailChanged: (String value) =>
+                    setState(() => controller.updateEmail(value)),
+                onPasswordChanged: (String value) =>
+                    setState(() => controller.updatePassword(value)),
+                onCreateAccount: () => context.goNamed(AppRoute.signUp.name),
+                onForgotPassword: () =>
+                    context.pushNamed(AppRoute.forgotPassword.name),
+              ),
             ),
           ),
-        ),
-        if (authState.isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-      ],
+          if (authState.isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
     );
   }
 }

@@ -9,6 +9,7 @@ import '../../../navigation/app_router.dart';
 import '../../domain/auth_status.dart';
 import '../../domain/firebase_auth_exception_handler.dart';
 import '../../domain/sign_up_form_state.dart';
+import '../auth_scaffold.dart';
 import 'sign_up_screen_controller.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -59,37 +60,39 @@ class _SignUpState extends ConsumerState<SignUpScreen> {
     final SignUpScreenController controller =
         ref.read(signUpScreenControllerProvider.notifier);
 
-    return Stack(
-      children: <Widget>[
-        Center(
-          child: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SignUpWidget(
-                doPasswordsMatch: state.doPasswordsMatch,
-                isCreateAccountDisabled: state.isSignUpDisabled,
-                onCreateAccount: () {
-                  if (!state.isLoading) {
-                    _onSignUp();
-                  }
-                },
-                onEmailChanged: (String value) =>
-                    setState(() => controller.updateEmail(value)),
-                onPasswordChanged: (String value) =>
-                    setState(() => controller.updatePassword(value)),
-                onConfirmedPasswordChanged: (String value) =>
-                    setState(() => controller.updateConfirmPassword(value)),
-                onLogin: () => context.goNamed(AppRoute.login.name),
+    return AuthScaffold(
+      Stack(
+        children: <Widget>[
+          Center(
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SignUpWidget(
+                  doPasswordsMatch: state.doPasswordsMatch,
+                  isCreateAccountDisabled: state.isSignUpDisabled,
+                  onCreateAccount: () {
+                    if (!state.isLoading) {
+                      _onSignUp();
+                    }
+                  },
+                  onEmailChanged: (String value) =>
+                      setState(() => controller.updateEmail(value)),
+                  onPasswordChanged: (String value) =>
+                      setState(() => controller.updatePassword(value)),
+                  onConfirmedPasswordChanged: (String value) =>
+                      setState(() => controller.updateConfirmPassword(value)),
+                  onLogin: () => context.goNamed(AppRoute.login.name),
+                ),
               ),
             ),
           ),
-        ),
-        if (state.isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-      ],
+          if (state.isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
     );
   }
 }
