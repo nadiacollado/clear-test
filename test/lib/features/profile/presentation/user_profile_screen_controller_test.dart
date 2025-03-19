@@ -39,12 +39,11 @@ void main() {
     expect(controller.state.username, equals(newUsername));
   });
 
-  test('saveProfile should return true if no fields changed', () async {
+  test('saveProfile should throw an exception if no fields changed', () async {
     when(() => mockUserRepository.updateUserProfile(any()))
         .thenAnswer((_) async {});
 
-    final bool result = await controller.saveProfile();
-    expect(result, isTrue);
+    expect(() => controller.saveProfile(), throwsA(isA<Exception>()));
     verifyNever(() => mockUserRepository.updateUserProfile(any()));
   });
 

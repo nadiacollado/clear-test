@@ -1,3 +1,6 @@
+import 'package:firebase_app_installations/firebase_app_installations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,6 +17,7 @@ class EditUserProfileWidget extends ConsumerStatefulWidget {
     required this.onAgeChanged,
     required this.onLocationChanged,
     required this.onBioChanged,
+    required this.disableSaveButtonExperiment,
     required this.onSave,
     this.username,
     this.email,
@@ -24,6 +28,7 @@ class EditUserProfileWidget extends ConsumerStatefulWidget {
     this.pronouns,
     this.bio,
   });
+
   final ValueChanged<String> onUsernameChanged;
   final ValueChanged<String> onFirstNameChanged;
   final ValueChanged<String> onLastNameChanged;
@@ -40,6 +45,7 @@ class EditUserProfileWidget extends ConsumerStatefulWidget {
   final String? pronouns;
   final String? bio;
   final VoidCallback onSave;
+  final bool disableSaveButtonExperiment;
 
   @override
   ConsumerState<EditUserProfileWidget> createState() =>
@@ -48,6 +54,41 @@ class EditUserProfileWidget extends ConsumerStatefulWidget {
 
 class _EditUserProfileWidgetState extends ConsumerState<EditUserProfileWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isChanged = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!kReleaseMode && Firebase.apps.isNotEmpty) {
+        // For experiment validation purposes only
+        final String token = await FirebaseInstallations.instance.getToken();
+
+        // ignore: avoid_print
+        print('Firebase installation auth token:\n$token');
+      }
+    });
+  }
+
+  Widget saveButton() {
+    void saveOnPressed() {
+      if (_formKey.currentState?.validate() ?? false) {
+        widget.onSave();
+      }
+    }
+
+    if (!widget.disableSaveButtonExperiment) {
+      return ElevatedButton(
+        onPressed: saveOnPressed,
+        child: Text(context.t.profile_save),
+      );
+    }
+
+    return ElevatedButton(
+      onPressed: isChanged ? saveOnPressed : null,
+      child: Text(context.t.profile_save),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,14 +147,7 @@ class _EditUserProfileWidgetState extends ConsumerState<EditUserProfileWidget> {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    widget.onSave();
-                  }
-                },
-                child: Text(context.t.profile_save),
-              ),
+              child: saveButton(),
             ),
           ],
         ),
@@ -129,6 +163,15 @@ class _EditUserProfileWidgetState extends ConsumerState<EditUserProfileWidget> {
     int maxLines = 1,
     String? Function(String?)? validator,
   }) {
+    void wrappedOnChanged(String param) {
+      if (!isChanged) {
+        setState(() {
+          isChanged = true;
+        });
+      }
+      onChanged(param);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -140,7 +183,7 @@ class _EditUserProfileWidgetState extends ConsumerState<EditUserProfileWidget> {
         CommonTextFormField(
           useController: true,
           inputHint: hint,
-          onChange: onChanged,
+          onChange: wrappedOnChanged,
           initialValue: initialValue,
           maxLines: maxLines,
           validator: validator,

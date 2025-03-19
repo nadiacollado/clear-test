@@ -25,9 +25,9 @@ For more information on Widgetbook, please refer to the [Widgetbook documentatio
 To add a new Widget UseCase, follow these steps:
 
 1. Export the widget from the `lib/widgets.dart` barrel file.
-1. Ensure a directory exists in the `widgetbook/lib` folder that corresponds to the widget use case.
-2. Create a file with a name that matches the widget the use case is for.
-3. Use the other use cases as examples to follow.
+2. Ensure a directory exists in the `widgetbook/lib` folder that corresponds to the widget use case.
+3. Create a file with a name that matches the widget the use case is for.
+4. Use the other use cases as examples to follow.
 
 All use cases require a few common lines of code, as shown in the example below:
 
@@ -45,6 +45,10 @@ Widget useCaseWidgetName(BuildContext context) {
   );
 }
 ```
+
+5. Once you have added your UseCase, you must run `dart run build_runner build -d` from the `widgetbook` directory to generate the `main.directories.g.dart` file that will display the new UseCase in the list.
+
+6. After you have ran the build process, you can run `flutter run` to verify that the widget is working correctly.
 
 ## Knobs
 

@@ -15,6 +15,7 @@ Widget useCaseEditUserProfileWidget(BuildContext context) {
     onAgeChanged: (age) {},
     onLocationChanged: (location) {},
     onBioChanged: (bio) {},
+    disableSaveButtonExperiment: true,
     onSave: () {},
     username: 'JohnDoe',
     email: 'john.doe@example.com',

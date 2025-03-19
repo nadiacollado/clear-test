@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,12 +13,22 @@ import 'edit_user_profile_widget.dart';
 import 'user_profile_screen_controller.dart';
 
 class EditUserProfileScreen extends ConsumerWidget {
-  const EditUserProfileScreen({super.key});
+  const EditUserProfileScreen({
+    super.key,
+    this.remoteConfigOverride,
+  });
+
+  final FirebaseRemoteConfig? remoteConfigOverride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final UserProfileScreenController controller =
         ref.read(userProfileScreenControllerProvider.notifier);
+
+    final FirebaseRemoteConfig remoteConfig =
+        remoteConfigOverride ?? FirebaseRemoteConfig.instance;
+    final bool disableSaveButton =
+        remoteConfig.getBool('disable_profile_save_button');
 
     return CommonScaffold(
       Center(
@@ -54,6 +65,7 @@ class EditUserProfileScreen extends ConsumerWidget {
                   onAgeChanged: controller.updateAge,
                   onLocationChanged: controller.updateLocation,
                   onBioChanged: controller.updateBio,
+                  disableSaveButtonExperiment: disableSaveButton,
                   onSave: () async {
                     final bool status = await controller.saveProfile();
                     if (!context.mounted) return;

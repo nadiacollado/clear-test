@@ -34,37 +34,42 @@ void main() {
     mockSave = MockVoidCallback();
   });
 
+  Finder findTextFieldByHint(WidgetTester tester, String hintText) {
+    return find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is TextField && widget.decoration?.hintText == hintText,
+    );
+  }
+
+  const String testUser = 'testuser@example.com';
+  const String testUsername = 'Test User';
+  Future<Widget> createWidgetUnderTest(WidgetTester tester) async {
+    await tester.localizedPump(
+      EditUserProfileWidget(
+        username: testUsername,
+        email: testUser,
+        onUsernameChanged: mockUsernameChanged.call,
+        onSave: mockSave.call,
+        onFirstNameChanged: mockFirstNameChanged.call,
+        onLastNameChanged: mockLastNameChanged.call,
+        onPronounsChanged: mockPronounsChanged.call,
+        onAgeChanged: mockAgeChanged.call,
+        onLocationChanged: mockLocationChanged.call,
+        onBioChanged: mockBioChanged.call,
+        disableSaveButtonExperiment: true,
+      ),
+    );
+
+    return tester.firstWidget(find.byType(EditUserProfileWidget));
+  }
+
   group('EditUserProfileWidget', () {
-    const String testUser = 'testuser@example.com';
-    const String testUsername = 'Test User';
-    Future<Widget> createWidgetUnderTest(WidgetTester tester) async {
-      await tester.localizedPump(
-        EditUserProfileWidget(
-          username: testUsername,
-          email: testUser,
-          onUsernameChanged: mockUsernameChanged.call,
-          onSave: mockSave.call,
-          onFirstNameChanged: mockFirstNameChanged.call,
-          onLastNameChanged: mockLastNameChanged.call,
-          onPronounsChanged: mockPronounsChanged.call,
-          onAgeChanged: mockAgeChanged.call,
-          onLocationChanged: mockLocationChanged.call,
-          onBioChanged: mockBioChanged.call,
-        ),
-      );
-
-      return tester.firstWidget(find.byType(EditUserProfileWidget));
-    }
-
     testWidgets('calls onUsernameChanged when username is changed',
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder usernameField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_username,
-      );
+      final Finder usernameField =
+          findTextFieldByHint(tester, tester.t.profile_username);
 
       await tester.enterText(usernameField, 'New Username');
 
@@ -75,11 +80,8 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder firstNameField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_firstName,
-      );
+      final Finder firstNameField =
+          findTextFieldByHint(tester, tester.t.profile_firstName);
 
       await tester.enterText(firstNameField, 'New First Name');
 
@@ -90,11 +92,8 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder lastNameField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_lastName,
-      );
+      final Finder lastNameField =
+          findTextFieldByHint(tester, tester.t.profile_lastName);
 
       await tester.enterText(lastNameField, 'New Last Name');
 
@@ -105,11 +104,8 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder pronounsField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_pronouns,
-      );
+      final Finder pronounsField =
+          findTextFieldByHint(tester, tester.t.profile_pronouns);
 
       await tester.enterText(pronounsField, 'They/Them');
 
@@ -120,11 +116,7 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder ageField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_age,
-      );
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
 
       await tester.enterText(ageField, '30');
 
@@ -160,9 +152,35 @@ void main() {
       verify(() => mockBioChanged('New Bio')).called(1);
     });
 
+    testWidgets('disables the save button until a value changes',
+        (WidgetTester tester) async {
+      await createWidgetUnderTest(tester);
+
+      final Finder saveButtonFinder = find.byType(ElevatedButton);
+      final ElevatedButton saveButton =
+          tester.widget<ElevatedButton>(saveButtonFinder);
+
+      expect(saveButton.enabled, isFalse);
+
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
+
+      await tester.enterText(ageField, '25');
+      await tester.pump();
+
+      final ElevatedButton updatedSaveButton =
+          tester.widget<ElevatedButton>(saveButtonFinder);
+
+      expect(updatedSaveButton.enabled, isTrue);
+    });
+
     testWidgets('calls onSave when save button is pressed',
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
+
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
+
+      await tester.enterText(ageField, '25');
+      await tester.pump();
 
       final Finder saveButton = find.text(tester.t.profile_save);
 
@@ -176,11 +194,7 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder ageField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_age,
-      );
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
 
       await tester.enterText(ageField, 'Error');
 
@@ -197,11 +211,7 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder ageField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_age,
-      );
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
 
       await tester.enterText(ageField, '-5');
 
@@ -218,11 +228,7 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder ageField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_age,
-      );
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
 
       await tester.enterText(ageField, '150');
 
@@ -239,11 +245,7 @@ void main() {
         (WidgetTester tester) async {
       await createWidgetUnderTest(tester);
 
-      final Finder ageField = find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is TextField &&
-            widget.decoration?.hintText == tester.t.profile_age,
-      );
+      final Finder ageField = findTextFieldByHint(tester, tester.t.profile_age);
 
       await tester.enterText(ageField, '25');
 
@@ -255,6 +257,59 @@ void main() {
       await tester.pump();
 
       expect(find.text(tester.t.profile_ageError), findsNothing);
+    });
+
+    group('remote config button experiment', () {
+      Future<Widget> createExperimentWidgetUnderTest(
+        WidgetTester tester,
+      ) async {
+        await tester.localizedPump(
+          EditUserProfileWidget(
+            username: testUsername,
+            email: testUser,
+            onUsernameChanged: mockUsernameChanged.call,
+            onSave: mockSave.call,
+            onFirstNameChanged: mockFirstNameChanged.call,
+            onLastNameChanged: mockLastNameChanged.call,
+            onPronounsChanged: mockPronounsChanged.call,
+            onAgeChanged: mockAgeChanged.call,
+            onLocationChanged: mockLocationChanged.call,
+            onBioChanged: mockBioChanged.call,
+            disableSaveButtonExperiment: false,
+          ),
+        );
+
+        return tester.firstWidget(find.byType(EditUserProfileWidget));
+      }
+
+      testWidgets('does not disable button on initial render',
+          (WidgetTester tester) async {
+        await createExperimentWidgetUnderTest(tester);
+
+        final Finder saveButtonFinder = find.byType(ElevatedButton);
+        final ElevatedButton saveButton =
+            tester.widget<ElevatedButton>(saveButtonFinder);
+
+        expect(saveButton.enabled, isTrue);
+      });
+
+      testWidgets('does not disable button after a change',
+          (WidgetTester tester) async {
+        await createExperimentWidgetUnderTest(tester);
+
+        final Finder saveButtonFinder = find.byType(ElevatedButton);
+
+        final Finder ageField =
+            findTextFieldByHint(tester, tester.t.profile_age);
+
+        await tester.enterText(ageField, '25');
+        await tester.pump();
+
+        final ElevatedButton updatedSaveButton =
+            tester.widget<ElevatedButton>(saveButtonFinder);
+
+        expect(updatedSaveButton.enabled, isTrue);
+      });
     });
   });
 }

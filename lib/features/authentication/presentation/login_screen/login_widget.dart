@@ -97,7 +97,8 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return null;
-    } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+    } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+        .hasMatch(value)) {
       return context.t.auth_emailErrorMessage;
     }
     return null;
