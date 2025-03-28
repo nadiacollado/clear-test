@@ -318,7 +318,9 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
           ).called(1);
         });
 
-        test('does not call exitWithError when repoName and organization are not empty', () {
+        test(
+            'does not call exitWithError when repoName and organization are not empty',
+            () {
           expect(
             () => githubCli.validateCreateRepository(Repo.frontEnd),
             returnsNormally,
@@ -336,7 +338,8 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
             ),
           ).thenAnswer((_) async => '');
 
-          final bool result = await githubCli.doesRepositoryExist(Repo.frontEnd);
+          final bool result =
+              await githubCli.doesRepositoryExist(Repo.frontEnd);
           expect(result, isTrue);
         });
 
@@ -355,9 +358,11 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
             ),
           );
 
-          when(() => mockTermUtils.tPrint(FontCodes.red, any())).thenReturn(null);
+          when(() => mockTermUtils.tPrint(FontCodes.red, any()))
+              .thenReturn(null);
 
-          final bool result = await githubCli.doesRepositoryExist(Repo.frontEnd);
+          final bool result =
+              await githubCli.doesRepositoryExist(Repo.frontEnd);
           expect(result, isFalse);
           verify(
             () => mockTermUtils.tPrint(
@@ -373,18 +378,19 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
           when(
             () => mockCliUtils.runCommand(
               'gh',
-              arguments: <String>['repo', 'create', testFullName, '--private'],
+              arguments: <String>['repo', 'create', testFullName, '--public'],
             ),
           ).thenAnswer((_) async => '');
 
-          when(() => mockTermUtils.tPrint(FontCodes.green, any())).thenReturn(null);
+          when(() => mockTermUtils.tPrint(FontCodes.green, any()))
+              .thenReturn(null);
 
           await githubCli.runCreateRepo(testFullName);
 
           verify(
             () => mockCliUtils.runCommand(
               'gh',
-              arguments: <String>['repo', 'create', testFullName, '--private'],
+              arguments: <String>['repo', 'create', testFullName, '--public'],
             ),
           ).called(1);
 
@@ -399,7 +405,7 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
         test('throws CliException when runCommand fails', () async {
           final CliException exception = CliException(
             command: 'gh',
-            arguments: <String>['repo', 'create', testFullName, '--private'],
+            arguments: <String>['repo', 'create', testFullName, '--public'],
             errorOutput: 'failed to create repo',
             exitCode: 1,
           );
@@ -407,7 +413,7 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
           when(
             () => mockCliUtils.runCommand(
               'gh',
-              arguments: <String>['repo', 'create', testFullName, '--private'],
+              arguments: <String>['repo', 'create', testFullName, '--public'],
             ),
           ).thenThrow(exception);
 
@@ -444,7 +450,8 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
             ),
           ).thenAnswer((_) async => '');
 
-          when(() => mockTermUtils.tPrint(FontCodes.green, any())).thenReturn(null);
+          when(() => mockTermUtils.tPrint(FontCodes.green, any()))
+              .thenReturn(null);
 
           await githubCli.changeLocalOrigin(testFullName, rootDir: testPath);
 
@@ -479,9 +486,13 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
       });
 
       group('createNewRepo', () {
-        test('calls runCreateRepo, changeLocalOrigin, and pushChanges on success', () async {
-          when(() => mockCliUtils.pushChanges(rootDir: testPath)).thenAnswer((_) async {});
-          when(() => mockTermUtils.tPrint(FontCodes.green, any())).thenReturn(null);
+        test(
+            'calls runCreateRepo, changeLocalOrigin, and pushChanges on success',
+            () async {
+          when(() => mockCliUtils.pushChanges(rootDir: testPath))
+              .thenAnswer((_) async {});
+          when(() => mockTermUtils.tPrint(FontCodes.green, any()))
+              .thenReturn(null);
           when(
             () => mockCliUtils.runCommand(
               'gh',
@@ -497,7 +508,11 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
             ),
           ).thenAnswer((_) async => '');
 
-          await githubCli.createNewRepo(Repo.frontEnd, testFullName, rootDir: testPath);
+          await githubCli.createNewRepo(
+            Repo.frontEnd,
+            testFullName,
+            rootDir: testPath,
+          );
 
           verify(
             () => mockTermUtils.tPrint(
@@ -512,7 +527,7 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
                 'repo',
                 'create',
                 testFullName,
-                '--private',
+                '--public',
               ],
             ),
           ).called(1);
@@ -554,8 +569,9 @@ https://github.com/cli/cli/releases/tag/v2.0.0''',
           final MockDirectory mockBackendRepoDir = MockDirectory();
           when(() => mockBackendRepoDir.existsSync()).thenReturn(true);
 
-          final String result =
-              await githubCli.cloneBackendRepo(backendRepoDir: mockBackendRepoDir);
+          final String result = await githubCli.cloneBackendRepo(
+            backendRepoDir: mockBackendRepoDir,
+          );
           expect(result, contains('flutter-starter-kit-backend'));
 
           verify(

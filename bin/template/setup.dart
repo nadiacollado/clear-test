@@ -6,6 +6,7 @@ import '../utils/general_utils.dart';
 import '../utils/terminal_utils.dart';
 import 'folder_mover.dart';
 import 'github_cli.dart';
+import 'github_cli_api.dart';
 import 'string_replacer.dart';
 
 void main(List<String> args) async {
@@ -45,28 +46,39 @@ void main(List<String> args) async {
 
   await githubCli.createRepository(Repo.frontEnd);
 
-  String rootDir;
+  final GithubCliApi githubApi = GithubCliApi();
+  await githubApi.createDevQaProdEnvironments(
+    githubCli.validatedFrontEndRepoFullName,
+  );
+
+  String backendRootDir;
 
   try {
-    rootDir = await githubCli.cloneBackendRepo();
+    backendRootDir = await githubCli.cloneBackendRepo();
   } catch (e) {
     term.exitWithError('Failed to clone backend repository.');
   }
 
-  await githubCli.createRepository(Repo.backEnd, rootDir: rootDir);
+  await githubCli.createRepository(Repo.backEnd, rootDir: backendRootDir);
 }
 
 void _setupIntroduction(TermUtils term) {
   term.tNewLine();
 
-  term.tPrint(FontCodes.green, 'Welcome to the Flutter Starter Kit setup script!');
+  term.tPrint(
+    FontCodes.green,
+    'Welcome to the Flutter Starter Kit setup script!',
+  );
 
   term.tPrint(
     FontCodes.normal,
     'This script will help you setup your new Flutter project with the Flutter Starter Kit template.',
   );
 
-  term.tPrint(FontCodes.normal, 'You must have the Github CLI installed to use this script.');
+  term.tPrint(
+    FontCodes.normal,
+    'You must have the Github CLI installed to use this script.',
+  );
 
   term.tNewLine();
 }

@@ -2,9 +2,17 @@ import 'dart:io' as io;
 import './general_utils.dart';
 
 abstract class ProcessManager {
-  Future<io.ProcessResult> run(String command, List<String> arguments, {String? workingDirectory});
+  Future<io.ProcessResult> run(
+    String command,
+    List<String> arguments, {
+    String? workingDirectory,
+  });
 
-  Future<io.Process> start(String command, List<String> arguments, {String? workingDirectory});
+  Future<io.Process> start(
+    String command,
+    List<String> arguments, {
+    String? workingDirectory,
+  });
 }
 
 class IoProcessManager implements ProcessManager {
@@ -17,7 +25,11 @@ class IoProcessManager implements ProcessManager {
       io.Process.run(command, arguments, workingDirectory: workingDirectory);
 
   @override
-  Future<io.Process> start(String command, List<String> arguments, {String? workingDirectory}) =>
+  Future<io.Process> start(
+    String command,
+    List<String> arguments, {
+    String? workingDirectory,
+  }) =>
       io.Process.start(command, arguments, workingDirectory: workingDirectory);
 }
 
@@ -55,13 +67,21 @@ class CliUtils {
     List<String> arguments = const <String>[],
     String? workingDirectory,
   }) async {
-    return _processManager.start(command, arguments, workingDirectory: workingDirectory);
+    return _processManager.start(
+      command,
+      arguments,
+      workingDirectory: workingDirectory,
+    );
   }
 
   Future<void> commitChanges(String commitMessage) async {
     final String repoRoot = getRepositoryRoot();
 
-    await runCommand('git', arguments: <String>['add', '.'], workingDirectory: repoRoot);
+    await runCommand(
+      'git',
+      arguments: <String>['add', '.'],
+      workingDirectory: repoRoot,
+    );
 
     await runCommand(
       'git',
